@@ -30,3 +30,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       libphonenumber-dev \
       libssl-dev \
       tzdata
+
+# Install shared libraries for running Haskell
+RUN export DEBIAN_FRONTEND=noninteractive \
+ && apt-get install -y --no-install-recommends \
+      netbase
