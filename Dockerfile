@@ -12,10 +12,10 @@ ENV LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 RUN LC_ALL=C locale-gen $LANG && update-locale LANG=$LANG LC_ALL=$LC_ALL
 
-# Support stack installing a sandboxed ghc
+# Support stack installing a sandboxed ghc and private dependencies
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get install -y --no-install-recommends \
-      ca-certificates build-essential
+      ca-certificates build-essential git
 
 # Install shared libraries for building Haskell
 RUN export DEBIAN_FRONTEND=noninteractive \
