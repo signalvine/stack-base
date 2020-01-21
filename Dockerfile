@@ -43,7 +43,7 @@ RUN git clone https://github.com/edenhill/librdkafka.git \
   && ldconfig \
   && cd ..
 RUN rm -rf librdkafka \
-  && apt-get -y --autoremove \
+  && apt-get remove -y --autoremove \
        zlib1g-dev libssl-dev libsasl2-dev curl gcc g++ make
 
 # Install shared libraries for running Haskell
