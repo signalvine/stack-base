@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM phusion/baseimage:0.11
 
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
