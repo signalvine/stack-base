@@ -25,7 +25,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       libgmp-dev \
       libtinfo-dev \
       libicu-dev \
-      libmariadb-dev \
+      libmariadbclient-dev \
       libpcre3-dev \
       libphonenumber-dev \
       libssl-dev \
