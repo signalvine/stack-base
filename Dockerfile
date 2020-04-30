@@ -33,7 +33,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 # Note: we have to compile librdkafka as the apt version is old
 RUN export DEBIAN_FRONTEND=noninteractive \
   && apt-get install -y --no-install-recommends \
-       zlib1g-dev libssl-dev libsasl2-dev curl gcc g++ make
+       zlib1g-dev libssl-dev libsasl2-dev
 RUN git clone https://github.com/edenhill/librdkafka.git \
   && cd librdkafka \
   && git checkout v1.3.0 \
@@ -42,9 +42,7 @@ RUN git clone https://github.com/edenhill/librdkafka.git \
   && make install \
   && ldconfig \
   && cd ..
-RUN rm -rf librdkafka \
-  && apt-get remove -y --autoremove \
-       zlib1g-dev libssl-dev libsasl2-dev curl gcc g++ make
+RUN rm -rf librdkafka
 
 # Install shared libraries for running Haskell
 RUN export DEBIAN_FRONTEND=noninteractive \
