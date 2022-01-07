@@ -33,8 +33,29 @@ jobs:
           fi
           echo ::set-output name=image::"$IMAGE_NAME:$IMAGE_TAG"
 
+      - name: Check whether packages need to be upgraded
+        id: upgradable
+        run: |
+          docker pull "${{ steps.tag.outputs.image }}"
+          if docker run --rm --entrypoint bash '${{ steps.tag.outputs.image }}' \
+            -c 'apt-get -qq update && apt-get -qqs upgrade' | grep -q .
+          then
+            echo "Some packages need to be upgraded"
+            docker rmi "${{ steps.tag.outputs.image }}"
+          else
+            echo "No packages need to be upgraded"
+            # Previous image will be used as cache
+          fi
+        continue-on-error: true
+
       - name: Build image
-        run: docker build -t "${{ steps.tag.outputs.image }}" .
+        # Image will be rebuilt if the base image has changed
+        # or packages need to be upgraded
+        run:
+          docker build --pull
+            --cache-from "${{ steps.tag.outputs.image }}"
+            --tag        "${{ steps.tag.outputs.image }}" .
 
       - name: Push image
+        # This pushes only the layers that were changed
         run: docker push "${{ steps.tag.outputs.image }}"
