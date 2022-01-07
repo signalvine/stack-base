@@ -1,0 +1,40 @@
+---
+name: Build and publish
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log into Docker Hub
+        uses: docker/login-action@v1.12.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up tagged image name
+        id: tag
+        run: |
+          IMAGE_NAME=$GITHUB_REPOSITORY
+          if [ "$GITHUB_REF_NAME" = main ]
+          then
+            IMAGE_TAG=latest
+          else
+            IMAGE_TAG=${GITHUB_REF_NAME//[^-A-Za-z0-9._]/_}
+          fi
+          echo ::set-output name=image::"$IMAGE_NAME:$IMAGE_TAG"
+
+      - name: Build image
+        run: docker build -t "${{ steps.tag.outputs.image }}" .
+
+      - name: Push image
+        run: docker push "${{ steps.tag.outputs.image }}"
