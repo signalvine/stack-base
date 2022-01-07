@@ -5,6 +5,8 @@ name: Build and publish
 on:
   push:
   workflow_dispatch:
+  schedule:
+    - cron: "17 17 * * 2"  # 12:17pm EST every Tuesday
 
 jobs:
   build:
