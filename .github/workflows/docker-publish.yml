@@ -36,11 +36,10 @@ jobs:
           echo ::set-output name=image::"$IMAGE_NAME:$IMAGE_TAG"
 
       - name: Check whether packages need to be upgraded
-        id: upgradable
         run: |
           docker pull "${{ steps.tag.outputs.image }}"
           if docker run --rm --entrypoint bash '${{ steps.tag.outputs.image }}' \
-            -c 'apt-get -qq update && apt-get -qqs upgrade' | grep -q .
+            -c 'apt-get -qq update && apt-get -qqs upgrade | grep -q .'
           then
             echo "Some packages need to be upgraded"
             docker rmi "${{ steps.tag.outputs.image }}"
@@ -48,6 +47,7 @@ jobs:
             echo "No packages need to be upgraded"
             # Previous image will be used as cache
           fi
+        # If this is the first build of a branch, the previous image won't exist
         continue-on-error: true
 
       - name: Build image
