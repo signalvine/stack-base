@@ -29,6 +29,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       libpcre3-dev \
       libphonenumber-dev \
       libssl-dev \
+      pkg-config \
       tzdata
 
 # Install shared libraries for running Haskell
