@@ -1,4 +1,4 @@
-FROM phusion/baseimage:focal-1.1.0
+FROM phusion/baseimage:jammy-1.0.1
 
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
@@ -25,10 +25,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       libgmp-dev \
       libtinfo-dev \
       libicu-dev \
-      libmariadbclient-dev \
+      libmariadb-dev \
       libpcre3-dev \
       libphonenumber-dev \
-      libssl-dev \
       pkg-config \
       tzdata
 
